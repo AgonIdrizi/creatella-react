@@ -5,10 +5,9 @@ import ProductsGrid from '../../Components/ProductsGrid/ProductsGrid';
 import './ProductBuilder.css';
 
 const ProductBuilder = () => {
-  
-  const onSortHandler = (sortBy) => {
-    console.log(sortBy)
-  }
+  const onSortHandler = sortBy => {
+    console.log(sortBy);
+  };
   return (
     <div className="ProductBuilder">
       <Header onSortHandler={onSortHandler} />
