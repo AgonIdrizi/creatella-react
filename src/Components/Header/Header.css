@@ -1,0 +1,13 @@
+.mainHeader {
+display: grid;
+    grid-template-columns: 35% 65%;
+    align-items: center;
+    height: 80px;
+    position: relative;
+    background-color: lightblue;
+    
+}
+
+h1 {
+    color: cornflowerblue;
+  }
