@@ -7,7 +7,7 @@
   "scripts": {
     "start": "json-server server/index.js --routes server/routes.json --middlewares server/handle-delay.js server/handle-ads.js",
     "test": "jest",
-    "format": "prettier --write \"src/**/*.js\" " ,
+    "format": "prettier --write \"src/**/*.js\" ",
     "lint": "eslint  src/*.js src/**/*.js",
     "start-client": "webpack-dev-server --mode development",
     "build": "webpack --config webpack.config.js"
@@ -28,6 +28,7 @@
     "@babel/runtime": "^7.6.0",
     "@testing-library/jest-dom": "^4.1.0",
     "@testing-library/react": "^9.1.4",
+    "antd": "^3.23.2",
     "autoprefixer": "^9.6.1",
     "babel-jest": "^24.9.0",
     "babel-loader": "^8.0.6",
