@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Header from '../../Components/Header/Header';
+import ProductsGrid from '../../Components/ProductsGrid/ProductsGrid';
 import './ProductBuilder.css';
 
 const ProductBuilder = () => {
@@ -11,6 +12,7 @@ const ProductBuilder = () => {
   return (
     <div className="ProductBuilder">
       <Header onSortHandler={onSortHandler} />
+      <ProductsGrid />
     </div>
   );
 };
