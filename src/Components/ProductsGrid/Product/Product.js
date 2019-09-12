@@ -10,7 +10,7 @@ const Product = props => {
   return (
     <div className="Product">
       <Card name="test" hoverable={true} bordered={true} style={cardStyle}>
-        <Face face={props.face} fontSize={props.size} />
+        <Face face={props.face} size={props.size} />
         <p>Size: {props.size} </p>
         <p>Price: {props.price}</p>
         <p>Date: {props.date}</p>
