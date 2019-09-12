@@ -8,3 +8,5 @@ const face = props => {
     </div>
   );
 };
+
+export default face;

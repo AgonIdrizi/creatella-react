@@ -11,9 +11,9 @@ const Product = props => {
     <div className="Product">
       <Card name="test" hoverable={true} bordered={true} style={cardStyle}>
         <Face face={props.face} fontSize={props.size} />
-        <p>Size: </p>
-        <p>Price: 23$</p>
-        <p>Date: </p>
+        <p>Size: {props.size} </p>
+        <p>Price: {props.price}</p>
+        <p>Date: {props.date}</p>
       </Card>
     </div>
   );
