@@ -6,7 +6,11 @@
 }
 
 .faceParagraph {
-    
     margin: 7px 0;
     height: 60px;
+    border: ridge;
+    margin-top: 7px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
