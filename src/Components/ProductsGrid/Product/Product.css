@@ -1,0 +1,17 @@
+.Product{
+   margin: 0px 5px;
+}
+
+.ant-card-body{
+   width:100%;
+
+   padding: 10px 0px;
+
+}
+.ant-card-body p {
+   margin: 7px 7px;
+}
+
+.span-product{
+  font-weight: 600;
+}
