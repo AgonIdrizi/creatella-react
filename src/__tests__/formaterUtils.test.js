@@ -5,21 +5,29 @@ import {
 
 describe('Format utility functions', () => {
   describe('formatDate', () => {
-    it('formates date in words, for input less than 7 days', () => {
-      const aDay = 24 * 60 * 60 * 1000;
+    it('formats date in words, for input less than 7 days', () => {
+      const aDayInMiliseconds = 24 * 60 * 60 * 1000;
 
       const justNow = formatDate(new Date(Date.now()));
       expect(justNow).toEqual('Just now');
 
-      const oneDayAgo = formatDate(new Date(Date.now() - aDay));
+      const oneDayAgo = formatDate(new Date(Date.now() - aDayInMiliseconds));
       expect(oneDayAgo).toEqual('1 day ago');
 
-      const twoDaysAgo = formatDate(new Date(Date.now() - aDay * 2));
+      const twoDaysAgo = formatDate(
+        new Date(Date.now() - aDayInMiliseconds * 2)
+      );
       expect(twoDaysAgo).toEqual('2 days ago');
 
-      const sevenDaysAgo = formatDate(new Date(Date.now() - aDay * 7));
+      const sevenDaysAgo = formatDate(
+        new Date(Date.now() - aDayInMiliseconds * 7)
+      );
       const dateRegexp = new RegExp(/\d{4}\-\d{2}\-\d{2}/);
       expect(sevenDaysAgo).toMatch(dateRegexp);
+
+      //Date.now() gives us date in string e.g. "Thu Sep 12 2019 15:57:51 GMT+0200 (Central European Summer Time)"
+      const dateInString = formatDate(Date.now());
+      expect(dateInString).toEqual('Just now');
     });
     it("handels singularity e.g '1 day ago'", () => {});
   });

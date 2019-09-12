@@ -1,5 +1,5 @@
 export const formatDate = date => {
-  const seconds = Math.floor((new Date() - date) / 1000);
+  const seconds = Math.floor((new Date() - new Date(date)) / 1000);
 
   const MINUTE_IN_SECONDS = 60;
   const HOUR_IN_SECONDS = 3600;
