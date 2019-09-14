@@ -8,14 +8,21 @@ import './ProductsGrid.css';
 
 const reducer = (state, action) => {
   switch (action.type) {
-    case 'start':
-      return { ...state, loading: false };
     case 'load':
       return {
         ...state,
         data: action.payload,
         isLoading: false,
         nextPage: state.nextPage + 1,
+      };
+    case 'startLoadWithSort':
+      return {
+        data: [],
+        isLoading: true,
+        preFetchedData: [],
+        isPreFetching: false,
+        nextPage: 2,
+        lastAddsNumber: 0,
       };
     case 'preFetch':
       return {
@@ -54,7 +61,7 @@ const reducer = (state, action) => {
   }
 };
 
-const ProductsGrid = props => {
+const ProductsGrid = ({ sortBy }) => {
   const [state, dispatch] = React.useReducer(reducer, {
     data: [],
     isLoading: true,
@@ -80,8 +87,10 @@ const ProductsGrid = props => {
   useEffect(() => {
     console.log('first effect');
     window.addEventListener('scroll', handleScroll);
+    //const sort= sortBy !==''?`&_sort=${sortBy}`:''
+    const url = 'http://localhost:3000/api/products?_page=1&_limit=15';
     axios
-      .get('http://localhost:3000/api/products?_page=1&_limit=15')
+      .get(url)
       .then(response => {
         dispatch({ type: 'load', payload: response.data });
       })
@@ -90,13 +99,32 @@ const ProductsGrid = props => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  //this effect will synchronize with sortBy prop,will dispatch an action to reload state-data,
+  //and start fetching data with _sort param
+  useEffect(() => {
+    if (sortBy !== '') {
+      dispatch({ type: 'startLoadWithSort' });
+      const url = `http://localhost:3000/api/products?_page=1&_limit=15&_sort=${sortBy}`;
+
+      axios
+        .get(url)
+        .then(response => {
+          dispatch({ type: 'load', payload: response.data });
+        })
+        .catch(error => console.log(error));
+    }
+  }, [sortBy]);
+
   //second effect will run after the first effect
   //and then will re-run every time when state of nextPage changes
   useEffect(() => {
     console.log('second effect');
     dispatch({ type: 'setIsFetching' });
+    const sort = sortBy !== '' ? `&_sort=${sortBy}` : '';
     axios
-      .get(`http://localhost:3000/api/products?_page=${nextPage}&_limit=15`)
+      .get(
+        `http://localhost:3000/api/products?_page=${nextPage}&_limit=15${sort}`
+      )
       .then(response => {
         dispatch({ type: 'preFetch', payload: response.data });
       })

@@ -11,7 +11,7 @@ describe('Ads component', () => {
     const { container } = render(
       <Ad lastAddsNumber={0} onAddsCreate={onAddsCreate} />
     );
-    const divImg = container.querySelector('.ad-div')
+    const divImg = container.querySelector('.ad-div');
     const img = container.querySelector('.ad');
 
     expect(onAddsCreate).toHaveBeenCalled();
