@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Product from './Product/Product';
 import { Spin } from 'antd';
+import Ad from '../Ad/Ad';
 import 'antd/es/spin/style/index.css';
 import axios from 'axios';
 import './ProductsGrid.css';
@@ -42,6 +43,12 @@ const reducer = (state, action) => {
         preFetchedData: [],
         nextPage: nextPage,
       };
+
+    case 'addsLastNumber':
+      return {
+        ...state,
+        lastAddsNumber: action.payload,
+      };
     default:
       throw new Error();
   }
@@ -54,9 +61,17 @@ const ProductsGrid = props => {
     preFetchedData: [],
     isPreFetching: false,
     nextPage: 2,
+    lastAddsNumber: 0,
   });
 
-  const { data, preFetchedData, isLoading, isPreFetching, nextPage } = state;
+  const {
+    data,
+    preFetchedData,
+    isLoading,
+    isPreFetching,
+    nextPage,
+    lastAddsNumber,
+  } = state;
 
   //this effect is used to add a scroll event-listener, so we can detect when the page is at bottom,
   //we also fetch the first batch of data here
@@ -103,6 +118,10 @@ const ProductsGrid = props => {
     }
   };
 
+  const onAddsCreate = value => {
+    dispatch({ type: 'addsLastNumber', payload: value });
+  };
+
   return (
     <section className="ProductsGrid">
       {isLoading && <Spin size="large" />}
@@ -118,7 +137,11 @@ const ProductsGrid = props => {
                 face={product.face}
                 date={product.date}
               />,
-              <div key={`spacer-${product.id}`}>text</div>,
+              <Ad
+                key={`spacer-${product.id}`}
+                lastAddsNumber={lastAddsNumber}
+                onAddsCreate={onAddsCreate}
+              />,
             ]
           ) : (
             <Product
@@ -130,7 +153,7 @@ const ProductsGrid = props => {
             />
           );
         })}
-      {isPreFetching  && !isLoading && <Spin />}
+      {isPreFetching && !isLoading && <Spin />}
       {!isPreFetching &&
         preFetchedData.length === 0 &&
         !isLoading &&
