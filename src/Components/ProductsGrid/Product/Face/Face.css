@@ -10,6 +10,7 @@
     height: 60px;
     border: ridge;
     margin-top: 7px;
+    padding-top: 4px;
     display: flex;
     align-items: center;
     justify-content: center;
