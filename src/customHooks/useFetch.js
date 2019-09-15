@@ -8,5 +8,5 @@ export const useFetch = (dispatch, options) => {
     .then(response => {
       dispatch({ type: options.type, payload: response.data });
     })
-    .catch(error => console.log(error));
+    .catch(error => dispatch({ type: 'error' }));
 };

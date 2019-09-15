@@ -15,6 +15,7 @@ const ProductsGrid = ({ sortBy }) => {
     isPreFetching: false,
     currentPage: 1,
     lastAddsNumber: 0,
+    errorMessage: '',
   });
 
   const {
@@ -24,6 +25,7 @@ const ProductsGrid = ({ sortBy }) => {
     isPreFetching,
     currentPage,
     lastAddsNumber,
+    errorMessage,
   } = state;
 
   //this effect is used to add a scroll event-listener, so we can detect when the page is at bottom,
@@ -74,7 +76,7 @@ const ProductsGrid = ({ sortBy }) => {
       window.document.body.scrollHeight;
 
     const scrolledToBottom = scrollTop + window.innerHeight >= scrollHeight;
-
+    //we dispatch bottom action only when at bottom
     if (scrolledToBottom) {
       dispatch({ type: 'bottom' });
     }
@@ -119,7 +121,9 @@ const ProductsGrid = ({ sortBy }) => {
       {!isPreFetching &&
         preFetchedData.length === 0 &&
         !isLoading &&
+        errorMessage === '' &&
         '~ end of catalogue ~'}
+      {errorMessage !== ''  && errorMessage}
     </section>
   );
 };

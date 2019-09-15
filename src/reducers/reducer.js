@@ -16,6 +16,7 @@ export const reducer = (state, action) => {
         isPreFetching: false,
         currentPage: 1,
         lastAddsNumber: 0,
+        errorMessage: '',
       };
     case 'preFetch':
       return {
@@ -26,7 +27,7 @@ export const reducer = (state, action) => {
     case 'setIsFetching': {
       return {
         ...state,
-        isPreFetching: true,
+        isPreFetching: true
       };
     }
     case 'bottom':
@@ -48,6 +49,14 @@ export const reducer = (state, action) => {
       return {
         ...state,
         lastAddsNumber: action.payload,
+      };
+    case 'error':
+      return {
+        ...state,
+        isLoading: false,
+        isPreFetching: false,
+        errorMessage:
+          'Opss, something went wrong, try re-loading in few seconds!',
       };
     default:
       throw new Error();
