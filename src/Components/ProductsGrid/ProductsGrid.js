@@ -1,65 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import Product from './Product/Product';
 import { Spin } from 'antd';
+import { useFetch } from './../../customHooks/useFetch';
+import { reducer } from './../../reducers/reducer';
 import Ad from '../Ad/Ad';
 import 'antd/es/spin/style/index.css';
-import axios from 'axios';
 import './ProductsGrid.css';
-
-const reducer = (state, action) => {
-  switch (action.type) {
-    case 'load':
-      return {
-        ...state,
-        data: action.payload,
-        isLoading: false,
-        nextPage: state.nextPage + 1,
-      };
-    case 'startLoadWithSort':
-      return {
-        data: [],
-        isLoading: true,
-        preFetchedData: [],
-        isPreFetching: false,
-        nextPage: 2,
-        lastAddsNumber: 0,
-      };
-    case 'preFetch':
-      return {
-        ...state,
-        preFetchedData: action.payload,
-        isPreFetching: false,
-      };
-    case 'setIsFetching': {
-      return {
-        ...state,
-        isPreFetching: true,
-      };
-    }
-    case 'bottom':
-      //nextPage keeps track of what should be our page to preFetch data 'api/products?_page=1'
-      //we update nextPage, only when user scrolls at the bottom and we are not in process of preFetching data
-      //e.g. when we dispatch the bottom action in handleScroll function,
-      //we dont want to update nextPage if we are in the procces of preFetching data
-      const nextPage = state.isPreFetching
-        ? state.nextPage
-        : state.nextPage + 1;
-      return {
-        ...state,
-        data: [...state.data, ...state.preFetchedData],
-        preFetchedData: [],
-        nextPage: nextPage,
-      };
-
-    case 'addsLastNumber':
-      return {
-        ...state,
-        lastAddsNumber: action.payload,
-      };
-    default:
-      throw new Error();
-  }
-};
 
 const ProductsGrid = ({ sortBy }) => {
   const [state, dispatch] = React.useReducer(reducer, {
@@ -67,7 +13,7 @@ const ProductsGrid = ({ sortBy }) => {
     isLoading: true,
     preFetchedData: [],
     isPreFetching: false,
-    nextPage: 2,
+    currentPage: 1,
     lastAddsNumber: 0,
   });
 
@@ -76,25 +22,20 @@ const ProductsGrid = ({ sortBy }) => {
     preFetchedData,
     isLoading,
     isPreFetching,
-    nextPage,
+    currentPage,
     lastAddsNumber,
   } = state;
 
   //this effect is used to add a scroll event-listener, so we can detect when the page is at bottom,
   //we also fetch the first batch of data here
   //when component unmounts, the cleaner function of this effect will remove our scroll-event that we added early on
-  //this effect will run only once, that's why we have empty array dependencies [] as second argument passed
+  //this effect will run only once
   useEffect(() => {
     console.log('first effect');
     window.addEventListener('scroll', handleScroll);
-    //const sort= sortBy !==''?`&_sort=${sortBy}`:''
-    const url = 'http://localhost:3000/api/products?_page=1&_limit=15';
-    axios
-      .get(url)
-      .then(response => {
-        dispatch({ type: 'load', payload: response.data });
-      })
-      .catch(error => console.log(error));
+
+    const options = { sortBy: sortBy, currentPage: 1, type: 'load' };
+    useFetch(dispatch, options);
 
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
@@ -104,32 +45,25 @@ const ProductsGrid = ({ sortBy }) => {
   useEffect(() => {
     if (sortBy !== '') {
       dispatch({ type: 'startLoadWithSort' });
-      const url = `http://localhost:3000/api/products?_page=1&_limit=15&_sort=${sortBy}`;
-
-      axios
-        .get(url)
-        .then(response => {
-          dispatch({ type: 'load', payload: response.data });
-        })
-        .catch(error => console.log(error));
+      const options = { sortBy: sortBy, currentPage: 1, type: 'load' };
+      useFetch(dispatch, options);
     }
   }, [sortBy]);
 
-  //second effect will run after the first effect
-  //and then will re-run every time when state of nextPage changes
+  //this effect will preFetch data every time currentPage value changes
+  //we change value of currentPage, when we are at the bottom && not in the proccess of preFetching
   useEffect(() => {
-    console.log('second effect');
-    dispatch({ type: 'setIsFetching' });
-    const sort = sortBy !== '' ? `&_sort=${sortBy}` : '';
-    axios
-      .get(
-        `http://localhost:3000/api/products?_page=${nextPage}&_limit=15${sort}`
-      )
-      .then(response => {
-        dispatch({ type: 'preFetch', payload: response.data });
-      })
-      .catch(error => console.log(error));
-  }, [nextPage]);
+    if (currentPage > 1) {
+      dispatch({ type: 'setIsFetching' });
+
+      const options = {
+        sortBy: sortBy,
+        currentPage: currentPage,
+        type: 'preFetch',
+      };
+      useFetch(dispatch, options);
+    }
+  }, [currentPage]);
 
   const handleScroll = () => {
     const scrollTop =
