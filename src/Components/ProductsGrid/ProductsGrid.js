@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Product from './Product/Product';
 import { Spin } from 'antd';
-import { useFetch } from './../../customHooks/useFetch';
+import { fetchData } from './../../utilFunctions/fetchData';
 import { reducer } from './../../reducers/reducer';
 import Ad from '../Ad/Ad';
 import 'antd/es/spin/style/index.css';
@@ -37,7 +37,7 @@ const ProductsGrid = ({ sortBy }) => {
     window.addEventListener('scroll', handleScroll);
 
     const options = { sortBy: sortBy, currentPage: 1, type: 'load' };
-    useFetch(dispatch, options);
+    fetchData(dispatch, options);
 
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
@@ -48,7 +48,7 @@ const ProductsGrid = ({ sortBy }) => {
     if (sortBy !== '') {
       dispatch({ type: 'startLoadWithSort' });
       const options = { sortBy: sortBy, currentPage: 1, type: 'load' };
-      useFetch(dispatch, options);
+      fetchData(dispatch, options);
     }
   }, [sortBy]);
 
@@ -63,7 +63,7 @@ const ProductsGrid = ({ sortBy }) => {
         currentPage: currentPage,
         type: 'preFetch',
       };
-      useFetch(dispatch, options);
+      fetchData(dispatch, options);
     }
   }, [currentPage]);
 
@@ -123,7 +123,7 @@ const ProductsGrid = ({ sortBy }) => {
         !isLoading &&
         errorMessage === '' &&
         '~ end of catalogue ~'}
-      {errorMessage !== ''  && errorMessage}
+      {errorMessage !== '' && errorMessage}
     </section>
   );
 };

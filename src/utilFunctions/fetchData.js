@@ -1,5 +1,5 @@
 import axios from 'axios';
-export const useFetch = (dispatch, options) => {
+export const fetchData = (dispatch, options) => {
   const sort = options.sortBy !== '' ? `&_sort=${options.sortBy}` : '';
   const url = `http://localhost:3000/api/products?_page=${options.currentPage}&_limit=15${sort}`;
 

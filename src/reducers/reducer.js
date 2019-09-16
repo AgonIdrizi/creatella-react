@@ -27,7 +27,7 @@ export const reducer = (state, action) => {
     case 'setIsFetching': {
       return {
         ...state,
-        isPreFetching: true
+        isPreFetching: true,
       };
     }
     case 'bottom':
