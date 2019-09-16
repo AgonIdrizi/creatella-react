@@ -4,6 +4,7 @@ import { Spin } from 'antd';
 import { fetchData } from './../../utilFunctions/fetchData';
 import { reducer } from './../../reducers/reducer';
 import Ad from '../Ad/Ad';
+import PropTypes from 'prop-types';
 import 'antd/es/spin/style/index.css';
 import './ProductsGrid.css';
 
@@ -14,7 +15,7 @@ const ProductsGrid = ({ sortBy }) => {
     preFetchedData: [],
     isPreFetching: false,
     currentPage: 1,
-    lastAddsNumber: 0,
+    lastAdsNumber: 0,
     errorMessage: '',
   });
 
@@ -24,7 +25,7 @@ const ProductsGrid = ({ sortBy }) => {
     isLoading,
     isPreFetching,
     currentPage,
-    lastAddsNumber,
+    lastAdsNumber,
     errorMessage,
   } = state;
 
@@ -33,7 +34,7 @@ const ProductsGrid = ({ sortBy }) => {
   //when component unmounts, the cleaner function of this effect will remove our scroll-event that we added early on
   //this effect will run only once
   useEffect(() => {
-    console.log('first effect');
+    
     window.addEventListener('scroll', handleScroll);
 
     const options = { sortBy: sortBy, currentPage: 1, type: 'load' };
@@ -103,7 +104,7 @@ const ProductsGrid = ({ sortBy }) => {
               />,
               <Ad
                 key={`spacer-${product.id}`}
-                lastAddsNumber={lastAddsNumber}
+                lastAdsNumber={lastAdsNumber}
                 onAddsCreate={onAddsCreate}
               />,
             ]
@@ -127,5 +128,9 @@ const ProductsGrid = ({ sortBy }) => {
     </section>
   );
 };
+
+ProductsGrid.propTypes ={
+  sortBy: PropTypes.string
+}
 
 export default ProductsGrid;

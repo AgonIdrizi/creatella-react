@@ -1,10 +1,13 @@
 import React, { useEffect, useRef } from 'react';
 import axios from 'axios';
+import PropTypes from 'prop-types'
 import './Ad.css';
-const adds = ({ lastAddsNumber, onAddsCreate }) => {
+
+
+const ads = ({ lastAdsNumber, onAddsCreate }) => {
   const randNumber = Math.floor(Math.random() * 10);
   //with ternary operator inside useRef, we make sure that a picture is not displayed in the screen 2 times in a row
-  const n = useRef(lastAddsNumber === randNumber ? randNumber + 1 : randNumber);
+  const n = useRef(lastAdsNumber === randNumber ? randNumber + 1 : randNumber);
 
   onAddsCreate(n.current);
 
@@ -21,4 +24,9 @@ const comparisonFn = function(prevProps, nextProps) {
   return true;
 };
 
-export default React.memo(adds, comparisonFn);
+ads.propTypes = {
+  lastAdsNumber: PropTypes.number,
+  onAddsCreate: PropTypes.func
+}
+
+export default React.memo(ads, comparisonFn);

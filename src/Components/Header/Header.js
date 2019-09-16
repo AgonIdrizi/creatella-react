@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import SortIcons from './SortIcons/SortICons';
+import PropTypes from 'prop-types';
 import './Header.css';
 
-const handleSortIconType = type => {};
 
 const Header = props => {
   return (
@@ -12,5 +12,9 @@ const Header = props => {
     </header>
   );
 };
+
+Header.propTypes = {
+  onSortHandler: PropTypes.func
+}
 
 export default Header;

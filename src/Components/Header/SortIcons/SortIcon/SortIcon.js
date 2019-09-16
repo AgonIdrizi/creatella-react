@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Icon, Button } from 'antd';
+import PropTypes from 'prop-types';
 import 'antd/es/input/style/index.css';
 import 'antd/es/button/style/index.css';
 
@@ -31,5 +32,9 @@ const SortIcon = props => {
     </p>
   );
 };
+
+SortIcon.propTypes = {
+  onSortHandler: PropTypes.func
+}
 
 export default SortIcon;

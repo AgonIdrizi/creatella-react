@@ -1,5 +1,6 @@
 import React from 'react';
 import './SortIcons.css';
+import PropTypes from 'prop-types';
 import SortIcon from './SortIcon/SortIcon';
 const SortIcons = props => {
   return (
@@ -10,5 +11,9 @@ const SortIcons = props => {
     </div>
   );
 };
+
+SortIcons.propTypes = {
+  onSortHandler: PropTypes.func
+}
 
 export default SortIcons;
