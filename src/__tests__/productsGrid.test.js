@@ -36,6 +36,12 @@ describe('ProductsGrid', () => {
       });
     });
 
+    await waitForDomChange({ productsSection }).then(() => {
+      act(() => {
+        fireEvent.scroll(window, { target: { scrollY: 400 } });
+      });
+    });
+
     const adImageNodes = container.querySelectorAll('.ad');
 
     expect(productsSection.childElementCount).toBe(48);

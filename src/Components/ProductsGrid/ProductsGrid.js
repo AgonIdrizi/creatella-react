@@ -8,6 +8,17 @@ import PropTypes from 'prop-types';
 import 'antd/es/spin/style/index.css';
 import './ProductsGrid.css';
 
+
+const debounce = (func, delay) => {
+  let inDebounce;
+  return function() {
+    clearTimeout(inDebounce);
+    inDebounce = setTimeout(() => {
+      func.apply(this, arguments);
+    }, delay);
+  }
+}
+
 const ProductsGrid = ({ sortBy }) => {
   const [state, dispatch] = React.useReducer(reducer, {
     data: [],
@@ -35,12 +46,12 @@ const ProductsGrid = ({ sortBy }) => {
   //this effect will run only once
   useEffect(() => {
     
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', debounce(handleScroll,500));
 
     const options = { sortBy: sortBy, currentPage: 1, type: 'load' };
     fetchData(dispatch, options);
 
-    return () => window.removeEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', debounce(handleScroll,500));
   }, []);
 
   //this effect will synchronize with sortBy prop,will dispatch an action to reload state-data,
